@@ -3,6 +3,7 @@ package com.example.datalogisticsvmware;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -24,15 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         final String TAG = "MyActivity";
         Button loginButton = findViewById(R.id.loginButton);
-        EditText emailText = findViewById(R.id.email);
+        EditText userText = findViewById(R.id.email);
         EditText passwordText = findViewById(R.id.password);
+        EditText orgText = findViewById(R.id.organization);
+        String url = "https://vcloud.datalogistics.lt/cloudapi/1.0.0/sessions";
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String email = emailText.getText().toString();
+                String user = userText.getText().toString();
                 String password = passwordText.getText().toString();
-                Log.d(TAG, "email is = " + email);
-                Log.d(TAG, "password is = " + password);
+                String org = orgText.getText().toString();
+                String auth = user + "@" + org + ":" + password;
+                byte[] data = auth.getBytes(StandardCharsets.UTF_8);
+                String basicAuth = Base64.encodeToString(data, Base64.DEFAULT);
+                Log.d(TAG, "auth = " + basicAuth);
             }
         });
     }
