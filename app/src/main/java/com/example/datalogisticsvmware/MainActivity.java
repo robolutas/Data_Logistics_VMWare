@@ -2,7 +2,9 @@ package com.example.datalogisticsvmware;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -25,37 +27,69 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedData sharedData = SharedData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        VolleyRequests.getInstance(this);
 
         Button loginButton = findViewById(R.id.loginButton);
-        EditText userText = findViewById(R.id.email);
+        Button onButton = findViewById(R.id.onButton);
+        Button sleepButton = findViewById(R.id.sleepButton);
+        EditText userText = findViewById(R.id.username);
         EditText passwordText = findViewById(R.id.password);
         EditText orgText = findViewById(R.id.organization);
-        String url = "https://vcloud.datalogistics.lt/cloudapi/1.0.0/sessions";
 
+        Intent intent = new Intent(this, organizationActivity.class);
+
+        String url = "https://vcloud.datalogistics.lt/cloudapi/1.0.0/sessions";
+        String url2 = "https://vcloud.datalogistics.lt/api/query?type=orgVdc";
+        String url3 = "https://vcloud.datalogistics.lt/api/vApp/vm-d8ef5cff-b56c-4593-83ef-22112407fdda/power/action/powerOn";
+        String url4 = "https://vcloud.datalogistics.lt/api/vApp/vm-d8ef5cff-b56c-4593-83ef-22112407fdda/power/action/powerOff";
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //Get data from text fields
                 String user = userText.getText().toString();
                 String password = passwordText.getText().toString();
                 String org = orgText.getText().toString();
+                //Turn data into base64
                 String auth = user + "@" + org + ":" + password;
                 byte[] data = auth.getBytes(StandardCharsets.UTF_8);
                 String basicAuth = Base64.encodeToString(data, Base64.DEFAULT);
-                httpCall(url, basicAuth);
+                //Get HTTP response
+                loginCall(url, basicAuth);
 
-                String jwt = sharedData.getJwt();
-                Log.d("Global", jwt);
+                //Delayed run for singleton to acquire variable
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        try {
+                            //VolleyRequests.getInstance().httpGetRequest(url2);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 1000);
+            }
+        });
+
+        onButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VolleyRequests.getInstance().httpPostRequest(url3);
+            }
+        });
+
+        sleepButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                VolleyRequests.getInstance().httpPostRequest(url4);
             }
         });
     }
 
-    public void httpCall(String url, String basicAuth) {
+    public void loginCall(String url, String basicAuth) {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -63,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("HTTP", response);
+                        //Log.d("HTTP", response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -84,16 +118,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                SharedData sharedData = SharedData.getInstance();
-
-                Log.e("response@@", response.headers.toString());
                 Map<String, String> responseHeaders = response.headers;
-                String id = responseHeaders.get("Set-Cookie");
-                Log.e("id@@", id);
-                sharedData.setId(id);
+                //Parse jwt
                 String jwt = responseHeaders.get("X-VMWARE-VCLOUD-ACCESS-TOKEN");
-                Log.e("cookies@@", jwt);
-                sharedData.setJwt(jwt);
+                SharedData.get().setJwt(jwt);
+
                 return super.parseNetworkResponse(response);
             }
         };
