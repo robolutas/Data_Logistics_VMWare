@@ -4,8 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/activity_main.xml" value="0.3467600700525394" />
-        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/activity_menu.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/activity_menu.xml" value="0.2" />
+        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/activity_network.xml" value="0.1" />
         <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/activity_organization.xml" value="0.1609375" />
+        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/activity_vm.xml" value="0.1578125" />
+        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/adapter_organization_view_layout.xml" value="0.4" />
+        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/adapter_view_layout.xml" value="0.1609375" />
+        <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/adapter_vm_view_layout.xml" value="0.536" />
         <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/content_menu.xml" value="0.264" />
         <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/list_view_layout.xml" value="0.2" />
         <entry key="..\:/Users/Rytis/AndroidStudioProjects/DataLogisticsVMWare/app/src/main/res/layout/orgView_activity.xml" value="0.1609375" />

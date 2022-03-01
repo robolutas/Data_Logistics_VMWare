@@ -23,6 +23,11 @@ public class VolleyRequests {
     public RequestQueue requestQueue;
     public String stringResponse;
 
+    //Accept Headers
+    // application/*+json;version=36.0 -
+    // application/json;version=36.0 - Get/PostJson
+    // application/*+json;multisite=;version=36.0 - Get/PostMulti
+
     private VolleyRequests(Context context)
     {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -83,6 +88,78 @@ public class VolleyRequests {
         requestQueue.add(stringRequest);
     }
 
+    public void httpPostJsonRequest(String url) {
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("HTTP - org ", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HTTP - org ", String.valueOf(error));
+            }
+        }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String jwt = SharedData.get().getJwt();
+                //Bearer jwt token and accept specific version
+                String bearer = "Bearer " + jwt;
+                params.put("Accept", "application/json;version=36.0");
+                params.put("Authorization", bearer);
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                Log.e("response@@", response.headers.toString());
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void httpPostMultiRequest(String url) {
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("HTTP - org ", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HTTP - org ", String.valueOf(error));
+            }
+        }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String jwt = SharedData.get().getJwt();
+                //Bearer jwt token and accept specific version
+                String bearer = "Bearer " + jwt;
+                params.put("Accept", "application/*+json;multisite=;version=36.0");
+                params.put("Authorization", bearer);
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                Log.e("response@@", response.headers.toString());
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     public void httpGetRequest(String url) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -105,7 +182,82 @@ public class VolleyRequests {
                 String jwt = SharedData.get().getJwt();
                 //Bearer jwt token and accept specific version
                 String bearer = "Bearer " + jwt;
+                //params.put("Accept", "application/*+json;version=36.0");
                 params.put("Accept", "application/*+json;version=36.0");
+                params.put("Authorization", bearer);
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                Log.e("response@@", response.headers.toString());
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void httpGetJsonRequest(String url) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Log.d("HTTP - org ", response);
+                        stringResponse = response;
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HTTP - org ", String.valueOf(error));
+            }
+        }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String jwt = SharedData.get().getJwt();
+                //Bearer jwt token and accept specific version
+                String bearer = "Bearer " + jwt;
+                //params.put("Accept", "application/*+json;version=36.0");
+                params.put("Accept", "application/json;version=36.0");
+                params.put("Authorization", bearer);
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                Log.e("response@@", response.headers.toString());
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void httpGetMultiRequest(String url) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Log.d("HTTP - org ", response);
+                        stringResponse = response;
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HTTP - org ", String.valueOf(error));
+            }
+        }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String jwt = SharedData.get().getJwt();
+                //Bearer jwt token and accept specific version
+                String bearer = "Bearer " + jwt;
+                //params.put("Accept", "application/*+json;version=36.0");
+                params.put("Accept", "application/*+json;multisite=;version=36.0");
                 params.put("Authorization", bearer);
                 return params;
             }

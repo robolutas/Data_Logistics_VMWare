@@ -35,18 +35,13 @@ public class MainActivity extends AppCompatActivity {
         VolleyRequests.getInstance(this);
 
         Button loginButton = findViewById(R.id.loginButton);
-        Button onButton = findViewById(R.id.onButton);
-        Button sleepButton = findViewById(R.id.sleepButton);
         EditText userText = findViewById(R.id.username);
         EditText passwordText = findViewById(R.id.password);
         EditText orgText = findViewById(R.id.organization);
 
-        Intent intent = new Intent(this, organizationActivity.class);
+        Intent intent = new Intent(this, menuActivity.class);
 
         String url = "https://vcloud.datalogistics.lt/cloudapi/1.0.0/sessions";
-        String url2 = "https://vcloud.datalogistics.lt/api/query?type=orgVdc";
-        String url3 = "https://vcloud.datalogistics.lt/api/vApp/vm-d8ef5cff-b56c-4593-83ef-22112407fdda/power/action/powerOn";
-        String url4 = "https://vcloud.datalogistics.lt/api/vApp/vm-d8ef5cff-b56c-4593-83ef-22112407fdda/power/action/powerOff";
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -73,18 +68,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }, 1000);
-            }
-        });
-
-        onButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                VolleyRequests.getInstance().httpPostRequest(url3);
-            }
-        });
-
-        sleepButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                VolleyRequests.getInstance().httpPostRequest(url4);
             }
         });
     }
